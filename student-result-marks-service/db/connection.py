@@ -6,7 +6,7 @@ def get_connection():
         host="localhost",   # changed from localhost
         user="root",
         password="1234567890",
-        database="university_db",
+        database="student_microservices",
         auth_plugin='mysql_native_password'   # added authentication plugin
     )
 

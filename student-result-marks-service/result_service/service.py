@@ -8,7 +8,7 @@ def get_result(student_id):
     cursor = conn.cursor(dictionary=True)
 
     cursor.execute(
-        "SELECT AVG(marks) as average FROM marks WHERE student_id=%s",
+        "SELECT SUM(marks) as total_marks, AVG(marks) as average_marks FROM marks WHERE student_id=%s",
         (student_id,)
     )
 
@@ -16,7 +16,15 @@ def get_result(student_id):
 
     conn.close()
 
-    if result["average"] is None:
+    if result["average_marks"] is None:
         raise ResultCalculationException("No marks available")
 
-    return result
+    # decide pass or fail
+    result_status = "Pass" if result["average_marks"] >= 40 else "Fail"
+
+    return {
+        "student_id": student_id,
+        "total_marks": result["total_marks"],
+        "average_marks": result["average_marks"],
+        "result": result_status
+    }
